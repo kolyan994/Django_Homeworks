@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 
 DATA = {
@@ -7,8 +8,8 @@ DATA = {
         'соль, ч.л.': 0.5,
     },
     'pasta': {
-        'макароны, г': 0.3,
-        'сыр, г': 0.05,
+        'макароны, кг': 0.3,
+        'сыр, кг': 0.05,
     },
     'buter': {
         'хлеб, ломтик': 1,
@@ -16,8 +17,21 @@ DATA = {
         'сыр, ломтик': 1,
         'помидор, ломтик': 1,
     },
-    # можете добавить свои рецепты ;)
+    # можете добавить свои рецепты;)
 }
+
+def recip(request, name):
+    if name in DATA:
+        serving = request.GET.get('servings', 1)
+        dct = DATA[name]
+        for key, value in dct.items():
+            dct[key] = value * int(serving)
+            context = {'recipe': dct}
+    else:
+        context = {'recipe': None}
+    return render(request, 'calculator/index.html', context)
+
+
 
 # Напишите ваш обработчик. Используйте DATA как источник данных
 # Результат - render(request, 'calculator/index.html', context)
