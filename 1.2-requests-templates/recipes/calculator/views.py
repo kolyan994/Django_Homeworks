@@ -1,5 +1,3 @@
-from django.shortcuts import render
-
 DATA = {
     'omlet': {
         'яйца, шт': 2,
